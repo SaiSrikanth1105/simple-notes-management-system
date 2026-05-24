@@ -25,7 +25,7 @@ SNM (Simple Notes Management System) is a Flask-based full stack web application
 - HTML
 - CSS
 - JavaScript
-- Bootstrap Icons / Font Awesome
+- Font Awesome
 
 ### Backend
 - Python
