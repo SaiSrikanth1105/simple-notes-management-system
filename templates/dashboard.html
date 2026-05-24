@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    {% block addcss %}
+    <title>Dashboard</title>
+    {% endblock %}
+
+    <link rel="stylesheet" href="{{url_for('static',filename='dashboard.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+                                              
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="navbar">
+
+        <div class="nav-left">
+
+            <a href="{{url_for('dashboard')}}" class="nav-item">Home</a>
+
+            <div class="dropdown">
+                <button class="dropbtn">Notes</button>
+
+                <div class="dropdown-content">
+                    <a href="{{url_for('addnotes')}}">Add Notes</a>
+                    <a href="{{url_for('viewallnotes')}}">View All Notes</a>
+                    <a href="{{url_for('getexceldata')}}">Get Excel Data</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn">Files</button>
+
+                <div class="dropdown-content">
+                    <a href="{{url_for('fileupload')}}">Upload Files</a>
+                    <a href="{{url_for('viewfiles')}}">View All Files</a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="dropdown">
+            <button class="dropbtn">
+                <i class="fa-solid fa-user"></i>  {{session.get('useremail')}}</button>
+            <div class="dropdown-content">
+                <a href="{{url_for('changepassword')}}">Change Password</a>
+                <a href="{{url_for('logout')}}">Logout</a>
+            </div>
+        </div>
+
+        <form method="post" action="{{url_for('search')}}">
+            <div class="search-btn">
+                <input type="text" name="sdata" placeholder="Search..." class="search-box">
+                <button>Search</button>
+            </div>
+        </form>
+    </nav>
+
+
+    {% if request.path == '/dashboard' %}
+    <main class="content">
+        <h1>Dashboard</h1>
+    </main>
+    {% endif %}
+
+
+    {% block content %}
+    <div class="dashboard-container">
+        <div class="welcome-card">
+            <h2>Welcome, {{session.get('username')}}</h2>
+            <p>Manage your notes and files easily from your dashboard</p>
+        </div>
+    </div>
+
+    <div class="stats-container">
+        <div class="stats-card">
+            <h3>My Total Notes</h3>
+            <p>{{notes_count}}</p>
+        </div>
+        <div class="stats-card">
+            <h3>My Total Files</h3>
+            <p>{{files_count}}</p>
+        </div>
+    </div>
+    <div class="quick-actions">
+        <a href="{{ url_for('addnotes') }}" class="action-cards">
+            <h3>Add a new note</h3>
+            <p>Create a new note</p>
+        </a>
+
+        <a href="{{ url_for('fileupload')}}" class="action-cards">
+            <h3>Upload a new file</h3>
+            <p>Upload and manage files</p>
+        </a>
+    </div>
+
+    {% endblock %}
+
+
+    {% if matched_data %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>Note ID</th>
+                <th>Title</th>
+                <th>Created at</th>
+                <th>Links</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for i in matched_data %}
+
+            <tr>
+                <td>{{ i[0] }}</td>
+                <td>{{ i[1] }}</td>
+                <td>{{ i[2] }}</td>
+                <td><a href="{{url_for('viewnotes', nid=i[0])}}" class="view-btn">
+                    <i class="fa-solid fa-eye">
+                </a></td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+    {% endif %}
+
+    {% if file_results %}
+
+    <table>
+        <thead>
+            <tr>
+                <th>File ID</th>
+                <th>File Name</th>
+                <th>Created at</th>
+                <th>Links</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for file in file_results %}
+
+            <tr>
+                <td>{{ file[0] }}</td>
+                <td>{{ file[1] }}</td>
+                <td>{{ file[2] }}</td>
+                <td>
+                    <a href="{{url_for('fileview', fid=file[0])}}" class="view-btn">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    {% endif %}
+
+</body>
+
+</html>

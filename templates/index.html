@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>Simple Notes App</title>
+
+    <link rel="stylesheet"
+    href="/static/index.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap"
+    rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+
+<body>
+
+    <div class="hero-section"><i class="fa-regular fa-note-sticky hero-icon"></i>
+        <h1 class="top-heading">Welcome to SNM</h1>
+        <h2 class="hero-subtitle">Simple Notes Management System</h2>
+        <div class="hero-line"></div>
+        <p class="hero-text">Your secure space to organize, manage and access your <span> notes</span> and <span> files</span> effortlessly.
+        </p>
+    </div>
+
+    <div class="main-container">
+        <div class="card-box">
+            <h2 class="card-title">Secure Access</h2>
+            <p class="desc">Login to your account or create a new one to get started.</p>
+            <a href="{{ url_for('login') }}" class="login-btn"><i class="fa-solid fa-lock"></i>
+                LOGIN
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <a href="{{ url_for('register') }}"class="register-btn">
+                <i class="fa-solid fa-user-plus"></i>REGISTER<i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{% extends 'dashboard.html' %}
+
+{% block addcss %}
+<title>Update Note</title>
+<link rel="stylesheet" href="{{url_for('static',filename='addnotes.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<div class="note-container">
+
+    <h1>Update Your Note</h1>
+    <form method="post" autocomplete="off">
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" value="{{stored_ndata[1]}}" autocomplete="off" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="4" required>{{stored_ndata[2]}}</textarea>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn">Update Note</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

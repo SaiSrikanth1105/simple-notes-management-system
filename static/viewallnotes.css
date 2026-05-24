@@ -1,0 +1,212 @@
+.table-wrapper {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table-container {
+
+    width: 75%;
+    max-width: 1100px;
+    padding: 30px;
+    background-color: rgba(255,255,255,0.12);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.20);
+    border-radius: 24px;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.20);
+    box-sizing: border-box;
+}
+
+
+.table-container h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+.glass-table {
+
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+table {
+
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 18px;
+}
+
+
+td {
+
+    background-color: transparent;
+    padding: 18px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: middle;
+}
+
+
+th {
+
+    background-color: rgba(255,255,255,0.08);
+    color:white;
+    font-weight: bold;
+    padding: 18px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    vertical-align: middle;
+}
+
+
+tbody tr {
+
+    transition: 0.3s;
+}
+
+
+tbody tr:hover {
+
+    background-color: rgba(79, 130, 181, 0.45);
+}
+
+
+.action-column {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 180px
+}
+
+
+.icon-btn {
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    margin-right: 10px;
+    border-radius: 50%;
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 16px;
+    transition: 0.3s;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
+}
+
+
+.view-btn {
+    background: linear-gradient(135deg, #20c997, #0ea5a4);
+}
+
+
+.update-btn {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+
+.delete-btn {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.no-notes {
+
+    text-align: center;
+    font-weight: bold;
+    padding: 25px;
+}
+
+
+.icon-btn:hover {
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0px 8px 20px rgba(0,0,0,0.25);
+    text-decoration: none;
+}
+
+.delete-modal{
+
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.18);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.delete-box{
+
+    background: rgba(44,62,80,0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 30px;
+    border-radius: 20px;
+    width: 350px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.25);
+}
+
+.delete-box h3{
+
+    color: white;
+    margin-bottom: 12px;
+}
+
+.delete-box p{
+
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 24px;
+}
+
+.modal-buttons{
+
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.cancel-btn,.confirm-btn{
+
+    padding: 10px 18px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.cancel-btn{
+
+    background: #95a5a6;
+    color: white;
+}
+
+.confirm-btn{
+
+    background: #e74c3c;
+    color: white;
+}
+
+.cancel-btn:hover,.confirm-btn:hover{
+    transform: translateY(-2px);
+}

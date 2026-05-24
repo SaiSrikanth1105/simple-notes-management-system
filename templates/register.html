@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page | SNM</title>
+    <link rel="stylesheet" href="/static/register.css">
+</head>
+<body>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="signup-container">
+        <div class="card-box">
+            <h2 class="title-design">SIGNUP</h2>
+            <form method="post" action="{{ url_for('register') }}">
+                
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="username" name="uname" placeholder="Username" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Email address" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <input type="password" name="password" placeholder="Confirm Password" required>
+                </div>
+                
+                <button type="submit">Signup</button>
+                <p class="footer-text">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
