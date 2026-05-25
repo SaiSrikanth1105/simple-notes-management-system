@@ -382,7 +382,7 @@ def deletefile(fid):
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
-    # check login
+
     if not session.get('useremail'):
         flash('please login first')
         return redirect(url_for('login'))
