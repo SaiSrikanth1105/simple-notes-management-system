@@ -42,7 +42,7 @@ def register():
         email = request.form.get('email')
         print(request.form)
         gotp = genotp()
-        userdata = {'username': username, 'password': password, 'email': email, 'gotp': gotp}
+        userdata = {'username': username, 'password': password, 'email': email, 'gotp': gotp, 'otp_time': str(datetime.datetime.now())}
         subject = "OTP for SNM Registration"
         body = f'OTP for SNM APP REGISTRATION {gotp}'
         send_mail(to=email, subject=subject, body=body)
@@ -56,14 +56,16 @@ def otp(pendata):
     if request.method == 'POST':
         uotp = request.form.get('otp')
         try:
-            # Your decoded dictionary
             ddata = dndata(pendata)
         except Exception as e:
             print(f"Error decoding data: {e}")
             flash('Could not load page')
             return redirect(url_for('register'))
         else:
-            # FIX 1: Convert user input to string for a 100% match
+            otp_time = datetime.datetime.fromisoformat(ddata.get('otp_time'))
+            if (datetime.datetime.now() - otp_time).seconds > 300:
+                flash('OTP expired. Please register again.')
+                return redirect(url_for('register'))
             if str(uotp) == str(ddata.get('gotp')): 
                 try:
                     cursor = mydb.cursor(buffered=True)            
