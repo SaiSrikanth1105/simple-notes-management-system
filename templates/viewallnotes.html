@@ -27,11 +27,13 @@
                 <td>{{ i[1] }}</td>
                 <td>{{ i[2] }}</td>
                 <td class="action-column">
+                    <div class="action-buttons">
                     <a href="{{url_for('viewnotes',nid=i[0])}}" class="icon-btn view-btn"><i class="fa-solid fa-eye"></i></a>
                     <a href="{{url_for('updatenotes',nid=i[0])}}" class="icon-btn update-btn"><i class="fa-solid fa-pen"></i></a>
                     <a href="{{url_for('deletenotes', nid=i[0])}}" class="icon-btn delete-btn"onclick="openDeleteModal(event, '{{url_for('deletenotes', nid=i[0])}}')">
                         <i class="fa-solid fa-trash"></i>
                     </a>
+                    </div>
                 </td>
             </tr>
             {% endfor %}

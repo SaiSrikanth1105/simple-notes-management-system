@@ -26,10 +26,12 @@
                     <td>{{ file[1] }}</td>
                     <td>{{ file[2] }}</td>
                     <td class="action-column">
+                        <div class="action-buttons">
                         <a href="{{ url_for('fileview', fid=file[0]) }}"class="icon-btn view-btn"><i class="fa-solid fa-eye"></i></a>
                         <a href="{{ url_for('downloadfile', fid=file[0]) }}"class="icon-btn download-btn"><i class="fa-solid fa-download"></i></a>
                         <a href="{{ url_for('deletefile', fid=file[0]) }}"class="icon-btn delete-btn"onclick="openDeleteModal(event, '{{url_for('deletefile', fid=file[0])}}')"><i class="fa-solid fa-trash"></i>
                         </a>
+                        </div>
                     </td>
                 </tr>
 

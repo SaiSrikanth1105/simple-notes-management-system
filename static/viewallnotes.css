@@ -23,6 +23,7 @@
 
 
 .table-container h1 {
+
     text-align: center;
     color: #2c3e50;
     margin-bottom: 20px;
@@ -41,10 +42,30 @@
 table {
 
     width: 100%;
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0;
     overflow: hidden;
     border-radius: 18px;
+}
+
+table, .glass-table {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-clip: padding-box;
+}
+
+td, th {
+    background-clip: padding-box;
+    -webkit-font-smoothing: antialiased;
+}
+/* Mask sub-pixel seam by giving cells a transparent bottom border
+   and promoting them to their own compositing layer */
+td, th {
+    border-bottom: 1px solid rgba(255,255,255,0);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 
@@ -53,7 +74,7 @@ td {
     background-color: transparent;
     padding: 18px;
     text-align: left;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-bottom: none;
     vertical-align: middle;
 }
 
@@ -65,7 +86,7 @@ th {
     font-weight: bold;
     padding: 18px;
     text-align: left;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-bottom: none;
     vertical-align: middle;
 }
 
@@ -84,16 +105,20 @@ tbody tr:hover {
 
 .action-column {
 
+    min-width: 180px;
+}
+
+.action-buttons {
+
     display: flex;
     align-items: center;
     gap: 12px;
-    min-width: 180px
 }
 
 
 .icon-btn {
 
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 42px;

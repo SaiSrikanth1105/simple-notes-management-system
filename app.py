@@ -15,24 +15,18 @@ except Exception:
 
 # Database connection
 mydb = mysql.connector.connect(host='localhost', user='root', password='admin', database='snmprj')
-
 app = Flask(__name__)
-# Tell Flask where to save uploaded files
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# This line automatically creates the folder if it gets deleted by accident!
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['SESSION_TYPE'] = 'filesystem'
 app.secret_key = 'codegnan123'
 if excel:
     excel.init_excel(app)
 
-
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -82,11 +76,9 @@ def otp(pendata):
                     flash("An error occurred during registration.")
                     return redirect(url_for('register'))
             else:
-                # This kicks in if the OTP doesn't match
                 flash("Warning!! Entered OTP is Incorrect. Please register again")
                 return redirect(url_for('register'))
         finally:
-            # Keeping your finally block exactly as it was
             print('OTP code check completed')         
     return render_template('otp.html')
 
@@ -98,7 +90,6 @@ def login():
         upassword = request.form.get('password')
         try:
             cursor = mydb.cursor(buffered=True)
-            # Use 'useremail' (the name in your DB)
             cursor.execute('select count(useremail) from users where useremail =%s', [uemail])
             count_email = cursor.fetchone()
             print(f"DEBUG: Found {count_email[0]} users for email {uemail}")
@@ -112,32 +103,22 @@ def login():
                 cursor.execute('select password from users where useremail =%s', [uemail])
                 stored_psd = cursor.fetchone()
                 cursor.close()
-
                 if stored_psd:
-                    # If fetchone() returned a tuple (e.g. (password,)), extract the value
                     if isinstance(stored_psd, (tuple, list)):
                         stored_val = stored_psd[0]
                     else:
                         stored_val = stored_psd
-
-                    # If the DB returned bytes, decode to string
                     if isinstance(stored_val, (bytes, bytearray)):
                         try:
                             stored_val = stored_val.decode('utf-8')
                         except Exception:
                             stored_val = stored_val.decode(errors='ignore')
-
-                    # Debug: show exact stored and input values (repr) and lengths
                     print(f"DEBUG stored_val repr: {repr(stored_val)} len={len(str(stored_val)) if stored_val is not None else 0}")
                     print(f"DEBUG upassword repr: {repr(upassword)} len={len(str(upassword)) if upassword is not None else 0}")
-
-                    # Normalize stored value: decode bytes handled above; strip null bytes and surrounding whitespace
                     try:
                         stored_val = str(stored_val).rstrip('\x00').strip()
                     except Exception:
                         stored_val = str(stored_val)
-
-                    # Compare as strings to avoid type/tuple mismatches
                     if str(stored_val) == str(upassword):
                         cursor = mydb.cursor(buffered=True)
                         cursor.execute('select username from users where useremail=%s',[uemail])
@@ -167,12 +148,12 @@ def logout():
         flash('You have been logged out successfully.')
     return redirect(url_for('login'))
 
+
 @app.route('/dashboard')
 def dashboard():
     if 'useremail' not in session:
         flash("Please login first")
         return redirect(url_for('login'))
-    
     cursor = mydb.cursor(buffered=True)
     cursor.execute('select count(*) from users where useremail=%s',[session.get('useremail')])
     user_exists= cursor.fetchone()[0]
@@ -181,14 +162,12 @@ def dashboard():
         session.clear()
         flash('Session expired. Please login again')
         return redirect(url_for('login'))
-    
     user_email = session['useremail']
     try:
         cursor = mydb.cursor(buffered=True)
         cursor.execute('SELECT username FROM users WHERE useremail = %s', [user_email])
         user_data = cursor.fetchone()
         username = user_data[0] if user_data else "User"
-        # Using standardized: title, description, created_at
         cursor.execute('SELECT title, description, created_at FROM notes WHERE useremail = %s', [user_email])
         user_notes = cursor.fetchall()
         notes_count = len(user_notes)
@@ -196,7 +175,6 @@ def dashboard():
         files_count = cursor.fetchone()[0]
         cursor.close() 
         return render_template('dashboard.html', name = username, notes = user_notes, notes_count = notes_count,files_count=files_count)
-
     except Exception as e:
         if 'cursor' in locals(): 
             cursor.close()
@@ -211,7 +189,6 @@ def addnotes():
             title = request.form.get('title')
             description = request.form.get('description')
             cursor = mydb.cursor(buffered=True)
-            # FIX: Changed useremail to user_email
             cursor.execute('insert into notes (title,description,useremail) values(%s,%s,%s)', [title, description, session.get('useremail')])
             mydb.commit()
             cursor.close()
@@ -226,7 +203,6 @@ def viewallnotes():
     if session.get('useremail'):
         try:
             cursor = mydb.cursor(buffered=True)
-            # Using standardized: created_at
             cursor.execute('select n_id, title, created_at from notes where useremail=%s', [session.get('useremail')])
             allnotesdata = cursor.fetchall()
             cursor.close()
@@ -295,12 +271,10 @@ def fileupload():
     if session.get('useremail'):
         if request.method == 'POST':
             file_data = request.files.get('file')
-            # IMPROVEMENT 1: Added check for empty filename just in case
             if not file_data or file_data.filename == '':
                 flash('No file selected')
                 return redirect(url_for('fileupload'))   
             fname = file_data.filename
-            # IMPROVEMENT 2: The 60-character safety check we just discussed!
             if len(fname) > 100:
                 flash('File name is too long! Please rename it to be under 60 characters.')
                 return redirect(url_for('fileupload'))
@@ -325,15 +299,12 @@ def fileupload():
 @app.route('/viewfiles')
 def viewfiles():
     if not session.get('useremail'):
-        return redirect(url_for('login'))
-        
+        return redirect(url_for('login')) 
     try:
         cursor = mydb.cursor(buffered=True)
-        # We only select ID, Name, and Date so the page loads instantly
         cursor.execute('SELECT f_id, file_name, created_at FROM filedata WHERE useremail = %s', (session.get('useremail'),))
         allfiledata = cursor.fetchall()
         cursor.close()
-        # Here is the magic link! We name it 'files' for the HTML page
         return render_template('viewallfiles.html', files=allfiledata)
     except Exception as e:
         print(e)
@@ -417,20 +388,16 @@ def search():
         return redirect(url_for('login'))
     if request.method == 'POST':
         s_data = request.form.get('sdata', '').strip()
-        # if empty
         if not s_data:
             flash('Search term is empty')
             return redirect(url_for('dashboard'))
-        # simple validation
         if not re.match(r'^[A-Za-z0-9\s]+$', s_data):
             flash('Invalid search term')
             return redirect(url_for('dashboard'))
         try:
             cursor = mydb.cursor(buffered=True)
-            # search notes
             cursor.execute('select n_id, title, created_at from notes where useremail=%s and title like %s',(session.get('useremail'), f"%{s_data}%"))
             notes_data = cursor.fetchall()
-            # search files
             cursor.execute('select f_id, file_name, created_at from filedata where useremail=%s and file_name like %s',(session.get('useremail'), f"%{s_data}%"))
             files_data = cursor.fetchall()
             cursor.close()

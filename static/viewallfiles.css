@@ -42,10 +42,30 @@
 table {
 
     width: 100%;
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0;
     overflow: hidden;
     border-radius: 18px;
+}
+
+
+table, .glass-table {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-clip: padding-box;
+}
+
+td, th {
+    background-clip: padding-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+td, th {
+    border-bottom: 1px solid rgba(255,255,255,0);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 
@@ -56,7 +76,7 @@ th {
     font-weight: bold;
     padding: 18px;
     text-align: left;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-bottom: none;
     vertical-align: middle;
 }
 
@@ -65,7 +85,7 @@ td {
     background: transparent;
     padding: 18px;
     text-align: left;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
+    border-bottom: none;
     vertical-align: middle;
 }
 
@@ -81,6 +101,11 @@ tbody tr:hover {
 
 .action-column {
 
+    min-width: 180px;
+}
+
+.action-buttons {
+
     display: flex;
     align-items: center;
     gap: 12px;
@@ -88,7 +113,7 @@ tbody tr:hover {
 
 .icon-btn {
 
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 42px;
@@ -102,6 +127,11 @@ tbody tr:hover {
     box-shadow: 0px 4px 15px rgba(0,0,0,0.15);
 }
 
+.icon-btn i{
+
+    border: none !important;
+    text-decoration: none !important;
+}
 
 .view-btn{   
     background: linear-gradient(135deg, #20c997, #0ea5a4);
